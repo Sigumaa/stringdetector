@@ -2,6 +2,7 @@ package stringdetector
 
 import (
 	"go/ast"
+	"strings"
 
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
@@ -30,6 +31,8 @@ func run(pass *analysis.Pass) (any, error) {
 		return nil, nil
 	}
 
+	ds := strings.Split(flag, ",")
+
 	inspect := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
 	nodeFilter := []ast.Node{
 		(*ast.Ident)(nil),
@@ -38,8 +41,10 @@ func run(pass *analysis.Pass) (any, error) {
 	inspect.Preorder(nodeFilter, func(n ast.Node) {
 		switch n := n.(type) {
 		case *ast.Ident:
-			if n.Name == flag {
-				pass.Reportf(n.Pos(), "%s is detected", flag)
+			for _, d := range ds {
+				if n.Name == d {
+					pass.Reportf(n.Pos(), "%s is detected", d)
+				}
 			}
 		}
 	})
