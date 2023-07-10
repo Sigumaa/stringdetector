@@ -11,7 +11,7 @@ func main() {
 ```
 
 ```bash
-$ go vet -vettool=`which stringdetector` -stringdetector.flag="Url" a
-.\a.go:4:6: Url is detected
-.\a.go:5:8: Url is detected
+$ go vet -vettool=`which stringdetector` -stringdetector.flag="Url" main
+.\main.go:4:6: Url is detected
+.\main.go:5:8: Url is detected
 ```
